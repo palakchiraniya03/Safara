@@ -1,10 +1,21 @@
-import { useState } from 'react'
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, useMap } from 'react-leaflet'
+import { useState, useEffect } from 'react'
+import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, Circle, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import crimeData from './crimeData'
 import { calculateDangerScore } from './dangerScore'
 import { geocodeAddress } from './geocode'
 import { getRoute } from './getRoute'
+
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+})
 
 const ROUTE_COLORS = ['#3388ff', '#ff8800', '#ff4444']
 
@@ -22,6 +33,17 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [mapCenter, setMapCenter] = useState([18.5204, 73.8567])
   const [error, setError] = useState('')
+  const [userLocation, setUserLocation] = useState(null)
+
+  useEffect(() => {
+    if (!navigator.geolocation) return
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (err) => console.warn('Location error:', err),
+      { enableHighAccuracy: true }
+    )
+    return () => navigator.geolocation.clearWatch(watchId)
+  }, [])
 
   const filteredCrimes = timeFilter === 'all'
     ? crimeData
@@ -30,7 +52,7 @@ function App() {
   const scoredRoutes = routes.map((route, i) => ({
     ...route,
     score: calculateDangerScore(route.points, filteredCrimes),
-    color: ROUTE_COLORS[i]
+    color: ROUTE_COLORS[i] || ROUTE_COLORS[0]
   }))
 
   const safestId = scoredRoutes.length > 0
@@ -53,34 +75,18 @@ function App() {
         return
       }
 
-      const mainRoutePoints = await getRoute(
+      const fetchedRoutes = await getRoute(
         startCoord.lat, startCoord.lng,
         endCoord.lat, endCoord.lng
       )
 
-      if (!mainRoutePoints) {
+      if (!fetchedRoutes) {
         setError('Could not find a route. Try different locations.')
         setLoading(false)
         return
       }
 
-      const routeVariants = [
-        { id: 1, name: 'Route A — Main Road', points: mainRoutePoints },
-        {
-          id: 2, name: 'Route B — Alternative 1', points: mainRoutePoints.map(p => ({
-            lat: p.lat + 0.003,
-            lng: p.lng + 0.002
-          }))
-        },
-        {
-          id: 3, name: 'Route C — Alternative 2', points: mainRoutePoints.map(p => ({
-            lat: p.lat - 0.002,
-            lng: p.lng + 0.003
-          }))
-        }
-      ]
-
-      setRoutes(routeVariants)
+      setRoutes(fetchedRoutes)
       setMapCenter([startCoord.lat, startCoord.lng])
 
     } catch (err) {
@@ -254,6 +260,29 @@ function App() {
           attribution="© OpenStreetMap contributors"
         />
         <FlyToLocation center={mapCenter} />
+
+        {userLocation && (
+          <>
+            <Circle
+              center={[userLocation.lat, userLocation.lng]}
+              radius={30}
+              color="#4A90E2"
+              fillColor="#4A90E2"
+              fillOpacity={0.15}
+              weight={1}
+            />
+            <CircleMarker
+              center={[userLocation.lat, userLocation.lng]}
+              radius={8}
+              color="white"
+              weight={2}
+              fillColor="#4A90E2"
+              fillOpacity={1}
+            >
+              <Popup>📍 You are here</Popup>
+            </CircleMarker>
+          </>
+        )}
 
         {filteredCrimes.map(crime => (
           <CircleMarker
