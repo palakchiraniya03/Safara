@@ -21,8 +21,11 @@ Safara is a safe route recommendation web application that helps users find safe
 ### Home Interface
 ![Home](./screenshots/home.png)
 
-### Route Recommendation
-![Routes](./screenshots/routes.png)
+### Day Route Recommendation
+![Day Route](./screenshots/day-route.png)
+
+### Night Route Recommendation
+![Night Route](./screenshots/night-route.png)
 
 ---
 
