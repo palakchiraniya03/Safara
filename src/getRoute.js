@@ -6,13 +6,13 @@ export async function getRoute(startLat, startLng, endLat, endLng) {
   const body = {
     coordinates: [
       [startLng, startLat],
-      [endLng, endLat]
+      [endLng, endLat],
     ],
     alternative_routes: {
       target_count: 3,
       weight_factor: 1.6,
-      share_factor: 0.6
-    }
+      share_factor: 0.6,
+    },
   }
 
   try {
@@ -20,14 +20,12 @@ export async function getRoute(startLat, startLng, endLat, endLng) {
       method: 'POST',
       headers: {
         Authorization: ORS_API_KEY,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     })
 
     const data = await response.json()
-
-    console.log('ORS RESPONSE:', data)
 
     if (!data.features || data.features.length === 0) {
       return null
@@ -36,19 +34,13 @@ export async function getRoute(startLat, startLng, endLat, endLng) {
     return data.features.map((feature, i) => ({
       id: i + 1,
       name: `Route ${String.fromCharCode(65 + i)}`,
-      points: feature.geometry.coordinates.map(([lng, lat]) => ({
-        lat,
-        lng
-      })),
-      distance: (
-        feature.properties.summary.distance / 1000
-      ).toFixed(1),
-      duration: Math.round(
-        feature.properties.summary.duration / 60
-      )
+      points: feature.geometry.coordinates.map(([lng, lat]) => ({ lat, lng })),
+      rawCoords: feature.geometry.coordinates,
+      distance: (feature.properties.summary.distance / 1000).toFixed(1),
+      duration: Math.round(feature.properties.summary.duration / 60),
     }))
   } catch (err) {
-    console.error('ROUTE ERROR:', err)
+    console.error('Route fetch error:', err)
     return null
   }
 }
