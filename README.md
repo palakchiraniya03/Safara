@@ -1,22 +1,54 @@
-# 🛡️ Safara — AI-Powered Safe Route Recommendation
+# Safara 🛡️
 
-A web application that recommends the safest route between two locations by analyzing crime incident data using a geospatial danger scoring algorithm.
+Safara is a safe route recommendation web application that helps users find safer travel paths using crime hotspot analysis and real-time route comparison.
+
+---
 
 ## Features
-- Real road-following route generation using OpenRouteService API
-- Danger score calculation using Haversine formula proximity analysis
-- Day/Evening/Night crime filter with dynamic route rescoring
-- Crime incident heatmap visualization
-- SOS emergency alert system
 
-## Tech Stack
-React, Leaflet.js, OpenRouteService API, Nominatim Geocoding API, Vite
+- Multiple alternative route generation
+- Crime hotspot visualization on interactive maps
+- Custom danger-scoring system
+- Real-time route comparison
+- Live location tracking
+- Nearby hospital and police safe spot integration
+- Responsive UI with interactive map overlays
 
-## Algorithm
-For each point along a route, checks all crime incidents within 300m radius. Aggregates severity scores and calculates weighted average danger index using the Haversine distance formula.
+---
 
 ## Screenshots
-(Add screenshots here)
 
-## Live Demo
-(Add Vercel link here)
+### Home Interface
+![Home](./screenshots/home.png)
+
+### Route Recommendation
+![Routes](./screenshots/routes.png)
+
+---
+
+## Tech Stack
+
+- React
+- Vite
+- JavaScript
+- Leaflet
+- OpenRouteService API
+- OpenStreetMap
+- Git & GitHub
+
+---
+
+## How It Works
+
+1. User enters source and destination
+2. OpenRouteService API generates multiple route options
+3. Crime hotspot data is analyzed for each route
+4. A custom danger score is calculated
+5. The safest route is highlighted on the map
+
+---
+
+## Installation
+
+Clone the repository:
+git clone https://github.com/palakchiraniya03/safara
