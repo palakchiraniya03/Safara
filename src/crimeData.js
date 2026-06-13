@@ -1,34 +1,44 @@
 const crimeData = [
-  { id: 1, lat: 18.5204, lng: 73.8567, type: 'Theft', severity: 3, time: 'night' },
-  { id: 2, lat: 18.5304, lng: 73.8490, type: 'Assault', severity: 5, time: 'night' },
-  { id: 3, lat: 18.5104, lng: 73.8650, type: 'Robbery', severity: 4, time: 'evening' },
-  { id: 4, lat: 18.5404, lng: 73.8720, type: 'Theft', severity: 2, time: 'day' },
-  { id: 5, lat: 18.5004, lng: 73.8430, type: 'Assault', severity: 5, time: 'night' },
-  { id: 6, lat: 18.5250, lng: 73.8600, type: 'Harassment', severity: 3, time: 'evening' },
-  { id: 7, lat: 18.5150, lng: 73.8750, type: 'Robbery', severity: 4, time: 'night' },
-  { id: 8, lat: 18.5350, lng: 73.8550, type: 'Theft', severity: 2, time: 'day' },
-  { id: 9, lat: 18.5450, lng: 73.8400, type: 'Assault', severity: 5, time: 'night' },
-  { id: 10, lat: 18.4950, lng: 73.8500, type: 'Theft', severity: 3, time: 'evening' },
-  { id: 11, lat: 18.5550, lng: 73.8650, type: 'Robbery', severity: 4, time: 'night' },
-  { id: 12, lat: 18.5080, lng: 73.8820, type: 'Harassment', severity: 2, time: 'day' },
-  { id: 13, lat: 18.5320, lng: 73.8380, type: 'Assault', severity: 5, time: 'night' },
-  { id: 14, lat: 18.4880, lng: 73.8670, type: 'Theft', severity: 3, time: 'evening' },
-  { id: 15, lat: 18.5180, lng: 73.8920, type: 'Robbery', severity: 4, time: 'night' },
-  { id: 16, lat: 18.5420, lng: 73.8480, type: 'Theft', severity: 2, time: 'day' },
-  { id: 17, lat: 18.5020, lng: 73.8350, type: 'Assault', severity: 5, time: 'night' },
-  { id: 18, lat: 18.5280, lng: 73.8750, type: 'Harassment', severity: 3, time: 'evening' },
-  { id: 19, lat: 18.4820, lng: 73.8580, type: 'Robbery', severity: 4, time: 'night' },
-  { id: 20, lat: 18.5480, lng: 73.8620, type: 'Theft', severity: 2, time: 'day' },
-  { id: 21, lat: 18.5120, lng: 73.8450, type: 'Assault', severity: 5, time: 'night' },
-  { id: 22, lat: 18.5380, lng: 73.8830, type: 'Theft', severity: 3, time: 'evening' },
-  { id: 23, lat: 18.4920, lng: 73.8720, type: 'Robbery', severity: 4, time: 'night' },
-  { id: 24, lat: 18.5220, lng: 73.8520, type: 'Harassment', severity: 2, time: 'day' },
-  { id: 25, lat: 18.5580, lng: 73.8460, type: 'Assault', severity: 5, time: 'night' },
-  { id: 26, lat: 18.4780, lng: 73.8640, type: 'Theft', severity: 3, time: 'evening' },
-  { id: 27, lat: 18.5340, lng: 73.8900, type: 'Robbery', severity: 4, time: 'night' },
-  { id: 28, lat: 18.5060, lng: 73.8410, type: 'Theft', severity: 2, time: 'day' },
-  { id: 29, lat: 18.5260, lng: 73.8680, type: 'Assault', severity: 5, time: 'night' },
-  { id: 30, lat: 18.4860, lng: 73.8530, type: 'Harassment', severity: 3, time: 'evening' },
+  { id: 1, lat: 34.0522, lng: -118.2437, type: 'Theft', severity: 3, time: 'night' },
+  { id: 2, lat: 34.0505, lng: -118.2450, type: 'Assault', severity: 5, time: 'night' },
+  { id: 3, lat: 34.0480, lng: -118.2500, type: 'Robbery', severity: 4, time: 'evening' },
+  { id: 4, lat: 34.0560, lng: -118.2400, type: 'Theft', severity: 2, time: 'day' },
+  { id: 5, lat: 34.0610, lng: -118.2550, type: 'Assault', severity: 5, time: 'night' },
+
+  { id: 6, lat: 34.0700, lng: -118.3500, type: 'Robbery', severity: 4, time: 'night' }, // Hollywood
+  { id: 7, lat: 34.0720, lng: -118.3450, type: 'Theft', severity: 2, time: 'day' },
+  { id: 8, lat: 34.0680, lng: -118.3550, type: 'Assault', severity: 5, time: 'night' },
+  { id: 9, lat: 34.0740, lng: -118.3400, type: 'Harassment', severity: 3, time: 'evening' },
+
+  { id: 10, lat: 34.0195, lng: -118.4912, type: 'Robbery', severity: 4, time: 'night' }, // Santa Monica
+  { id: 11, lat: 34.0180, lng: -118.4850, type: 'Theft', severity: 3, time: 'evening' },
+  { id: 12, lat: 34.0220, lng: -118.4950, type: 'Assault', severity: 5, time: 'night' },
+
+  { id: 13, lat: 34.0736, lng: -118.4004, type: 'Theft', severity: 2, time: 'day' }, // Beverly Hills
+  { id: 14, lat: 34.0710, lng: -118.3950, type: 'Robbery', severity: 4, time: 'night' },
+  { id: 15, lat: 34.0750, lng: -118.4050, type: 'Assault', severity: 5, time: 'night' },
+
+  { id: 16, lat: 34.0407, lng: -118.2468, type: 'Theft', severity: 3, time: 'evening' },
+  { id: 17, lat: 34.0420, lng: -118.2500, type: 'Robbery', severity: 4, time: 'night' },
+  { id: 18, lat: 34.0380, lng: -118.2430, type: 'Assault', severity: 5, time: 'night' },
+
+  { id: 19, lat: 34.0900, lng: -118.3280, type: 'Harassment', severity: 3, time: 'evening' },
+  { id: 20, lat: 34.0870, lng: -118.3250, type: 'Theft', severity: 2, time: 'day' },
+
+  { id: 21, lat: 34.1015, lng: -118.3269, type: 'Robbery', severity: 4, time: 'night' }, // Hollywood Sign area
+  { id: 22, lat: 34.1030, lng: -118.3300, type: 'Assault', severity: 5, time: 'night' },
+
+  { id: 23, lat: 34.0620, lng: -118.3080, type: 'Theft', severity: 3, time: 'evening' },
+  { id: 24, lat: 34.0580, lng: -118.3020, type: 'Harassment', severity: 2, time: 'day' },
+
+  { id: 25, lat: 34.0250, lng: -118.2800, type: 'Robbery', severity: 4, time: 'night' },
+  { id: 26, lat: 34.0270, lng: -118.2750, type: 'Assault', severity: 5, time: 'night' },
+
+  { id: 27, lat: 34.0450, lng: -118.2700, type: 'Theft', severity: 2, time: 'day' },
+  { id: 28, lat: 34.0470, lng: -118.2650, type: 'Harassment', severity: 3, time: 'evening' },
+
+  { id: 29, lat: 34.0340, lng: -118.3000, type: 'Robbery', severity: 4, time: 'night' },
+  { id: 30, lat: 34.0360, lng: -118.2950, type: 'Assault', severity: 5, time: 'night' },
 ]
 
 export default crimeData

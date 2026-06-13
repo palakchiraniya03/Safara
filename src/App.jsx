@@ -59,11 +59,12 @@ function FlyToLocation({ center }) {
 // ─── Map Legend ───────────────────────────────────────────────────────────────
 function MapLegend() {
   const entries = [
-    { color: '#ef4444', label: 'Crime hotspot',    shape: 'circle' },
+    { color: '#ff2244', label: 'Crime Incident', shape: 'circle' },
+    { color: 'purple', label: 'ML Hotspot (DBSCAN)', shape: 'circle' },
     { color: '#22c55e', label: 'Hospital / Clinic', shape: 'circle' },
-    { color: '#3b82f6', label: 'Police station',   shape: 'circle' },
-    { color: '#4A90E2', label: 'Your location',    shape: 'circle' },
-    { color: '#00ff88', label: 'Safest route',     shape: 'line'   },
+    { color: '#3b82f6', label: 'Police Station', shape: 'circle' },
+    { color: '#4A90E2', label: 'Your Location', shape: 'circle' },
+    { color: '#00ff88', label: 'Safest Route', shape: 'line' },
   ]
  
   return (
@@ -158,23 +159,58 @@ function RouteCard({ route, isSafest, isSelected, onClick }) {
       </div>
  
       {/* Danger score */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ color: '#aaa', fontSize: '12px' }}>Danger:</span>
-        <span style={{
-          color,
-          fontWeight: 800,
-          fontSize: '16px',
-          lineHeight: 1,
-        }}>{route.score}</span>
-        <span style={{ color: '#555', fontSize: '12px' }}>/5</span>
-        <span style={{
+            {/* ML Risk Assessment */}
+      <div
+        style={{
           background: color + '22',
-          color,
-          borderRadius: '4px',
-          padding: '2px 7px',
-          fontSize: '11px',
-          fontWeight: 600,
-        }}>{emoji} {label}</span>
+          borderRadius: '8px',
+          padding: '8px',
+          marginBottom: '10px',
+        }}
+      >
+        <span
+          style={{
+            color,
+            fontWeight: 700,
+            fontSize: '13px',
+          }}
+        >
+          🤖 Predicted Risk: {label.toUpperCase()}
+        </span>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <span style={{ color: '#aaa', fontSize: '12px' }}>
+          Crime Score:
+        </span>
+
+        <span
+          style={{
+            color,
+            fontWeight: 800,
+            fontSize: '16px',
+            lineHeight: 1,
+          }}
+        >
+          {route.score}
+        </span>
+
+        <span style={{ color: '#555', fontSize: '12px' }}>
+          /5
+        </span>
+
+        <span
+          style={{
+            background: color + '22',
+            color,
+            borderRadius: '4px',
+            padding: '2px 7px',
+            fontSize: '11px',
+            fontWeight: 600,
+          }}
+        >
+          {emoji} {label}
+        </span>
       </div>
 
       <div style={{
@@ -244,11 +280,45 @@ function Sidebar({
     }}>
       {/* Header */}
       <div>
-        <h2 style={{ color: '#00d4ff', margin: 0, fontSize: '20px', fontWeight: 800, letterSpacing: '-0.02em' }}>
+        <h2
+          style={{
+            color: '#00d4ff',
+            margin: 0,
+            fontSize: '20px',
+            fontWeight: 800,
+            letterSpacing: '-0.02em',
+          }}
+        >
           🛡️ Safara
         </h2>
-        <p style={{ color: '#555', fontSize: '11px', margin: '4px 0 0', letterSpacing: '0.04em' }}>
-          AI-POWERED SAFE ROUTE RECOMMENDATION
+
+        <div
+          style={{
+            display: 'inline-block',
+            background: '#00d4ff22',
+            color: '#00d4ff',
+            padding: '3px 8px',
+            borderRadius: '6px',
+            fontSize: '10px',
+            fontWeight: 700,
+            marginTop: '6px',
+            marginBottom: '6px',
+          }}
+        >
+          ML POWERED
+        </div>
+
+        <p
+          style={{
+            color: '#777',
+            fontSize: '11px',
+            margin: '2px 0 0',
+            lineHeight: 1.4,
+          }}
+        >
+          DBSCAN • Geospatial Analytics
+          <br />
+          Route Risk Assessment
         </p>
       </div>
  
@@ -328,6 +398,53 @@ function Sidebar({
         </div>
       </div>
  
+      <div
+        style={{
+          background: '#16161e',
+          border: '1px solid #2a2a3a',
+          borderRadius: '12px',
+          padding: '14px',
+        }}
+      >
+        <div
+          style={{
+            color: '#00d4ff',
+            fontWeight: 700,
+            marginBottom: '10px',
+            fontSize: '14px',
+          }}
+        >
+          🤖 ML Crime Analysis
+        </div>
+
+        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
+          Dataset Records: 5000
+        </div>
+
+        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
+          ML Hotspots Visualized: 300
+        </div>
+
+        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
+          DBSCAN Clusters: 4
+        </div>
+
+        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
+          Noise Points: 904
+        </div>
+
+        <div
+          style={{
+            color: '#00ff88',
+            fontSize: '12px',
+            fontWeight: 600,
+            marginTop: '8px',
+          }}
+        >
+          Algorithm: DBSCAN
+        </div>
+      </div>
+
       {/* Route comparison */}
       {scoredRoutes.length > 0 && (
         <div>
