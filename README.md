@@ -1,57 +1,48 @@
-# Safara 🛡️
+# Safara – AI-Powered Safe Route Recommendation Platform
 
-Safara is a safe route recommendation web application that helps users find safer travel paths using crime hotspot analysis and real-time route comparison.
+## Overview
 
----
+Safara is a route recommendation platform that helps users choose safer travel routes by combining crime analysis, machine learning, and geospatial visualization.
 
 ## Features
 
-- Multiple alternative route generation
-- Crime hotspot visualization on interactive maps
-- Custom danger-scoring system
-- Real-time route comparison
-- Live location tracking
-- Nearby hospital and police safe spot integration
-- Responsive UI with interactive map overlays
+* Safe route recommendation
+* Route comparison and risk scoring
+* Crime hotspot detection using DBSCAN
+* Interactive map visualization with Leaflet
+* Hospital and police station discovery along routes
+* Time-based crime filtering
 
----
+## Machine Learning Pipeline
 
-## Screenshots
-
-### Home Interface
-![Home](./screenshots/home.png)
-
-### Day Route Recommendation
-![Day Route](./screenshots/day-route.png)
-
-### Night Route Recommendation
-![Night Route](./screenshots/night-route.png)
-
----
+Crime Dataset
+→ Data Cleaning with Pandas
+→ DBSCAN Clustering (Scikit-Learn)
+→ Hotspot Detection
+→ Flask REST API
+→ React + Leaflet Visualization
 
 ## Tech Stack
 
-- React
-- Vite
-- JavaScript
-- Leaflet
-- OpenRouteService API
-- OpenStreetMap
-- Git & GitHub
+Frontend:
 
----
+* React
+* Leaflet
+* Vite
 
-## How It Works
+Backend:
 
-1. User enters source and destination
-2. OpenRouteService API generates multiple route options
-3. Crime hotspot data is analyzed for each route
-4. A custom danger score is calculated
-5. The safest route is highlighted on the map
+* Flask
+* Pandas
+* Scikit-Learn
 
----
+Machine Learning:
 
-## Installation
+* DBSCAN Clustering
 
-Clone the repository:
-git clone https://github.com/palakchiraniya03/safara
+## Future Improvements
+
+* Time-aware hotspot prediction
+* Crime category clustering
+* Dynamic risk prediction models
+* Indian city crime datasets integration
