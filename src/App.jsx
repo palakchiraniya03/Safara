@@ -33,6 +33,7 @@ import {
 import { geocodeAddress } from './geocode'
 import { getRoute } from './getRoute'
 import { getSafeSpotsAlongRoute } from './safeSpots'
+import { fetchHotspots } from './services/hotspotApi'
  
 // ─── Leaflet icon fix ───────────────────────────────────────────────────────
 delete L.Icon.Default.prototype._getIconUrl
@@ -44,7 +45,7 @@ L.Icon.Default.mergeOptions({
  
 // ─── Constants ───────────────────────────────────────────────────────────────
 const ROUTE_COLORS = ['#3b82f6', '#f97316', '#ef4444']
-const PUNE_CENTER  = [18.5204, 73.8567]
+const PUNE_CENTER  = [34.0522, -118.2437]
  
 // ─── Helper component: fly to location on map ────────────────────────────────
 function FlyToLocation({ center }) {
@@ -260,14 +261,14 @@ function Sidebar({
           value={start}
           onChange={e => setStart(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && onSearch()}
-          placeholder="From (e.g. Shivajinagar)"
+          placeholder="From (e.g. Hollywood)"
           style={inputStyle}
         />
         <input
           value={end}
           onChange={e => setEnd(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && onSearch()}
-          placeholder="To (e.g. Hadapsar)"
+          placeholder="To (e.g. Santa Monica)"
           style={inputStyle}
         />
         <button
@@ -416,6 +417,7 @@ function App() {
   const [safeSpots, setSafeSpots]     = useState([])
   const [userLocation, setUserLocation] = useState(null)
   const [selectedId, setSelectedId]   = useState(null)
+  const [hotspots, setHotspots] = useState([])
  
   // Live location watch
   useEffect(() => {
@@ -435,7 +437,24 @@ function App() {
     document.head.appendChild(style)
     return () => document.head.removeChild(style)
   }, [])
- 
+
+  useEffect(() => {
+    async function loadHotspots() {
+      try {
+        const data = await fetchHotspots()
+
+        console.log("ML Hotspots count:", data.length)
+
+        setHotspots(data.slice(0, 300))
+      } catch (err) {
+        console.error("Failed to load hotspots:", err)
+        alert("Failed to load hotspots")
+      }
+    }
+
+    loadHotspots()
+  }, [])
+
   // Filtered crime data based on selected time
   const filteredCrimes = timeFilter === 'all'
     ? crimeData
@@ -481,8 +500,8 @@ function App() {
     setSelectedId(null)
  
     try {
-      const startCoord = await geocodeAddress(start + ', Pune')
-      const endCoord   = await geocodeAddress(end   + ', Pune')
+      const startCoord = await geocodeAddress(start + ', Los Angeles')
+      const endCoord   = await geocodeAddress(end   + ', Los Angeles')
  
       if (!startCoord || !endCoord) {
         setError('Could not find one of the locations. Try being more specific.')
@@ -626,6 +645,24 @@ function App() {
               </CircleMarker>
             ))}
           </MarkerClusterGroup>
+
+         {/* ML Detected Hotspots */}
+          {hotspots.map((point, index) => (
+            <CircleMarker
+              key={`ml-hotspot-${index}`}
+              center={[point.lat, point.lon]}
+              radius={8}
+              color="purple"
+              fillColor="purple"
+              fillOpacity={0.9}
+            >
+              <Popup>
+                🔥 ML Crime Hotspot
+                <br />
+                Cluster: {point.cluster}
+              </Popup>
+            </CircleMarker>
+          ))}
  
           {/* Routes — safest / highlighted on top, others dimmed */}
           {scoredRoutes
