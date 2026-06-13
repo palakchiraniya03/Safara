@@ -34,7 +34,8 @@ import { geocodeAddress } from './geocode'
 import { getRoute } from './getRoute'
 import { getSafeSpotsAlongRoute } from './safeSpots'
 import { fetchHotspots } from './services/hotspotApi'
- 
+import { fetchMlStats } from './services/mlStatsApi'
+
 // ─── Leaflet icon fix ───────────────────────────────────────────────────────
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -263,7 +264,7 @@ function Sidebar({
   timeFilter, setTimeFilter,
   loading, error,
   scoredRoutes, safestId, selectedId, setSelectedId,
-  onSearch, safeSpotCount,
+  onSearch, safeSpotCount,mlStats,
 }) {
   return (
     <div style={{
@@ -417,33 +418,37 @@ function Sidebar({
           🤖 ML Crime Analysis
         </div>
 
-        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
-          Dataset Records: 5000
-        </div>
+        {mlStats ? (
+          <>
+            <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
+              Dataset Records: {mlStats.records}
+            </div>
 
-        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
-          ML Hotspots Visualized: 300
-        </div>
+            <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
+              DBSCAN Clusters: {mlStats.clusters}
+            </div>
 
-        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
-          DBSCAN Clusters: 4
-        </div>
+            <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
+              Noise Points: {mlStats.noise_points}
+            </div>
 
-        <div style={{ color: '#ccc', fontSize: '12px', marginBottom: '4px' }}>
-          Noise Points: 904
-        </div>
-
-        <div
-          style={{
-            color: '#00ff88',
-            fontSize: '12px',
-            fontWeight: 600,
-            marginTop: '8px',
-          }}
-        >
-          Algorithm: DBSCAN
-        </div>
-      </div>
+            <div
+              style={{
+                color: '#00ff88',
+                fontSize: '12px',
+                fontWeight: 600,
+                marginTop: '8px',
+              }}
+            >
+              Algorithm: {mlStats.algorithm}
+            </div>
+          </>
+        ) : (
+          <div style={{ color: '#888', fontSize: '12px' }}>
+            Loading ML statistics...
+          </div>
+        )}
+      </div> 
 
       {/* Route comparison */}
       {scoredRoutes.length > 0 && (
@@ -535,6 +540,7 @@ function App() {
   const [userLocation, setUserLocation] = useState(null)
   const [selectedId, setSelectedId]   = useState(null)
   const [hotspots, setHotspots] = useState([])
+  const [mlStats, setMlStats] = useState(null)
  
   // Live location watch
   useEffect(() => {
@@ -570,6 +576,28 @@ function App() {
     }
 
     loadHotspots()
+  }, [])
+
+  useEffect(() => {
+    async function loadMlStats() {
+      try {
+
+        const stats = await fetchMlStats()
+
+        console.log("ML Stats:", stats)
+
+        setMlStats(stats)
+
+      } catch (err) {
+
+        console.error("Failed to load ML stats", err)
+
+      }
+
+    }
+
+    loadMlStats()
+
   }, [])
 
   // Filtered crime data based on selected time
@@ -683,6 +711,7 @@ function App() {
         selectedId={selectedId} setSelectedId={setSelectedId}
         onSearch={handleSearch}
         safeSpotCount={safeSpots.length}
+        mlStats={mlStats}
       />
  
       <div style={{ flex: 1, position: 'relative' }}>
@@ -774,9 +803,19 @@ function App() {
               fillOpacity={0.9}
             >
               <Popup>
-                🔥 ML Crime Hotspot
+                <b>🔥 DBSCAN Crime Hotspot</b>
+
                 <br />
-                Cluster: {point.cluster}
+
+                Cluster ID: {point.cluster}
+
+                <br />
+
+                Density-Based Crime Pattern
+
+                <br />
+
+                ML Detected
               </Popup>
             </CircleMarker>
           ))}
