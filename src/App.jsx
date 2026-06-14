@@ -797,10 +797,10 @@ function App() {
             <CircleMarker
               key={`ml-hotspot-${index}`}
               center={[point.lat, point.lon]}
-              radius={8}
+              radius={4}
               color="purple"
               fillColor="purple"
-              fillOpacity={0.9}
+              fillOpacity={0.7}
             >
               <Popup>
                 <b>🔥 DBSCAN Crime Hotspot</b>
@@ -816,7 +816,7 @@ function App() {
                 <br />
 
                 ML Detected
-              </Popup>
+              </Popup>  
             </CircleMarker>
           ))}
  
